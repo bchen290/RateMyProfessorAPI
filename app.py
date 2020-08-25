@@ -1,5 +1,5 @@
 from flask import Flask
-from . import db
+from . import db, RateMyProfessorScraper
 
 DREXEL_ID = 1521
 
@@ -12,9 +12,12 @@ def hello_world():
     return 'Hello World!'
 
 
-#@app.route('/scrape')
-#def scrape():
-#    RateMyProfessorScraper.RateMyProfessorScraper(DREXEL_ID)
+@app.route('/scrape')
+def scrape():
+    scraper = RateMyProfessorScraper.RateMyProfessorScraper(DREXEL_ID)
+    scraper.get_all_professors()
+
+    return 'Scraping'
 
 
 if __name__ == '__main__':
