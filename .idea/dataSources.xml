@@ -18,11 +18,11 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="sqlalchemy" uuid="f42f6e9a-19d2-4fc0-9c58-3a999907ea7f">
-      <driver-ref>sqlite.xerial</driver-ref>
+    <data-source source="LOCAL" name="PostgreSQL - rmp@localhost" uuid="30f22a22-2c64-46a0-ba77-43bba0d64c4e">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/app/database.db</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/rmp</jdbc-url>
     </data-source>
   </component>
 </project>

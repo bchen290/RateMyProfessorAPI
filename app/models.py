@@ -1,8 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from dataclasses import dataclass
-from . import app
 
-db = SQLAlchemy(app)
+from app import db
 
 
 @dataclass
