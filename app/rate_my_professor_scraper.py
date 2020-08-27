@@ -26,17 +26,21 @@ class RateMyProfessorScraper:
     def get_all_professors(self):
         number_of_professors = self.get_number_of_professors()
         number_of_pages = math.ceil(number_of_professors / self.RESULT_PER_PAGE)
-        print(number_of_pages)
+        print("Scraping " + str(number_of_pages) + " pages")
 
         for i in range(number_of_pages + 1):
             page = requests.get(self.BASE_URL.format(page=i, id=self.school_id))
             page_json = json.loads(page.content)
 
-            print(i)
+            print("Page: " + str(i))
 
             for professor in page_json['professors']:
                 try:
-                    name = ' '.join((professor['tFname'], professor['tMiddlename'], professor['tLname']))
+                    if professor['tMiddlename']:
+                        name = ' '.join((professor['tFname'], professor['tMiddlename'], professor['tLname']))
+                    else:
+                        name = ' '.join((professor['tFname'], professor['tLname']))
+
                     professor_id = professor['tid']
 
                     professor_detail = self.get_professor_detail(professor_id)
@@ -52,6 +56,8 @@ class RateMyProfessorScraper:
                     db.session.commit()
                 except (JSONDecodeError, IntegrityError) as e:
                     continue
+
+        print("Done!")
 
     def get_professor_detail(self, professor_id):
         professor_detail_list = []

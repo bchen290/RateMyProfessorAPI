@@ -1,3 +1,5 @@
+from threading import Thread
+
 from flask import jsonify, request, render_template
 from . import app, rate_my_professor_scraper
 from .models import db, Professor, Reviews
@@ -15,8 +17,17 @@ def page_not_found(e):
 
 @app.route('/professors/all', methods=['GET'])
 def professors():
-    all_professors = db.session.query(Professor, Reviews).join(Reviews).all()
-    return jsonify(all_professors)
+    reviews = db.session.query(Professor, Reviews).join(Reviews).all()
+
+    result = dict()
+
+    for review in reviews:
+        if review[0].name not in result:
+            result[review[0].name] = [review[0], review[1]]
+        else:
+            result[review[0].name].append(review[1])
+
+    return jsonify(result)
 
 
 @app.route('/professors', methods=['GET'])
@@ -36,8 +47,13 @@ def professor():
 
 @app.route('/scrape')
 def scrape():
+    thread = Thread(target=threaded_scrape)
+    thread.daemon = True
+    thread.start()
+    return 'Scraping'
+
+
+def threaded_scrape():
     DREXEL_ID = 1521
     scraper = rate_my_professor_scraper.RateMyProfessorScraper(DREXEL_ID)
     scraper.get_all_professors()
-
-    return 'Scraping'

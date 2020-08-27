@@ -12,6 +12,14 @@ class Professor(db.Model):
     overall_rating: str = db.Column(db.String, nullable=False)
     classes: str = db.Column(db.String, nullable=False)
 
+    def __hash__(self):
+        return hash((self.id, self.name, self.overall_rating, self.classes))
+
+    def __eq__(self, other):
+        return (self.id, self.name, self.overall_rating, self.classes) == (other.id, other.name, other.overall_rating, other.classes)
+
+    def __lt__(self, other):
+        return self.name < other.name
 
 @dataclass
 class Reviews(db.Model):
