@@ -1,11 +1,10 @@
 from json import JSONDecodeError
 from sqlite3 import IntegrityError
+from .models import db, Reviews, Professor
 
 import requests
 import json
 import math
-
-from . import db
 
 
 class RateMyProfessorScraper:
@@ -44,15 +43,13 @@ class RateMyProfessorScraper:
                     professor_class_set = set()
 
                     for detail in professor_detail:
-                        db.get_db().execute('INSERT INTO reviews (rate_my_professor_id, professor_id, comment) VALUES (?, ?, ?)',
-                                            (detail[0], professor_id, detail[1]))
-                        db.get_db().commit()
+                        db.session.add(Reviews(rate_my_professor_id=detail[0], professor_id=professor_id, comment=detail[1]))
+                        db.session.commit()
 
                         professor_class_set.add(detail[2])
 
-                    db.get_db().execute('INSERT INTO professor (id, name, overall_rating, classes) VALUES (?, ?, ?, ?)',
-                                        (professor_id, name, professor['overall_rating'], json.dumps(list(professor_class_set))))
-                    db.get_db().commit()
+                    db.session.add(Professor(id=professor_id, name=name, overall_rating=professor['overall_rating'], classes=json.dumps(list(professor_class_set))))
+                    db.session.commit()
                 except (JSONDecodeError, IntegrityError) as e:
                     continue
 

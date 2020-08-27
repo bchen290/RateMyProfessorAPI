@@ -7,19 +7,22 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:db.sqlite</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="database" uuid="838e2659-8ba1-4e6d-8b93-7b34fca4eff1">
+    <data-source source="LOCAL" name="database" uuid="26cf457e-2ef0-4141-a2d8-ff55d8dbc7b5">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\brian\Desktop\RateMyProfessorAPI\database</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\brian\Desktop\RateMyProfessorAPI\app\database</jdbc-url>
       <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/license.txt</url>
-        </library>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/sqlite-jdbc-3.31.1.jar</url>
         </library>
       </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="sqlalchemy" uuid="f42f6e9a-19d2-4fc0-9c58-3a999907ea7f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/app/database.db</jdbc-url>
     </data-source>
   </component>
 </project>
