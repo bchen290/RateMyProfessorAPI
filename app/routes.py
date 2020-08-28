@@ -17,11 +17,11 @@ def page_not_found(e):
 
 @app.route('/professors/all', methods=['GET'])
 def professors():
-    reviews = db.session.query(Professor, Reviews).join(Reviews).all()
+    professors_and_reviews = db.session.query(Professor, Reviews).join(Reviews).all()
 
     result = dict()
 
-    for review in reviews:
+    for review in professors_and_reviews:
         if review[0].name not in result:
             result[review[0].name] = [review[0], review[1]]
         else:
@@ -36,13 +36,25 @@ def professor():
 
     professor_name = query_parameters.get('name')
 
-    query = "SELECT * FROM professor WHERE name=?"
-    cursor = db.get_db().cursor()
-    results = cursor.execute(query, (professor_name,)).fetchall()
+    result = db.session.query(Professor).filter(Professor.name == professor_name).all()
 
-    items = [dict(zip([key[0] for key in cursor.description], row)) for row in results]
+    return jsonify(result)
 
-    return jsonify(items)
+
+@app.route('/reviews', methods=['GET'])
+def reviews():
+    query_parameters = request.args
+
+    professor_name = query_parameters.get('name')
+
+    professor_and_review = db.session.query(Professor, Reviews).filter(Professor.name == professor_name).all()
+
+    result = []
+
+    for review in professor_and_review:
+        result.append(review[1])
+
+    return jsonify(result)
 
 
 @app.route('/scrape')
