@@ -7,7 +7,7 @@ from .models import db, Professor, Reviews
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('index.html')
+    return render_template('template.html')
 
 
 @app.errorhandler(404)
