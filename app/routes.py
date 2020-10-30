@@ -1,13 +1,13 @@
 from threading import Thread
 
-from flask import jsonify, request, render_template
+from flask import jsonify, request, render_template, redirect
 from . import app, rate_my_professor_scraper
 from .models import db, Professor, Reviews
 
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('template.html')
+    return redirect('/api/docs')
 
 
 @app.errorhandler(404)
@@ -17,6 +17,19 @@ def page_not_found(e):
 
 @app.route('/professors/all', methods=['GET'])
 def professors():
+    """Get all Drexel Professors
+    ---
+    get:
+      description: Get all professors
+      responses:
+        200:
+          description: Returns a list of professors
+          content:
+            application/json:
+              schema: Professor
+      tags:
+        - Professors
+    """
     professors_and_reviews = db.session.query(Professor, Reviews).join(Reviews).all()
 
     result = dict()
@@ -32,6 +45,19 @@ def professors():
 
 @app.route('/professors', methods=['GET'])
 def professor():
+    """Get a specific professor
+    ---
+    get:
+      description: Get a specific professor
+      responses:
+        200:
+          description: Returns a professor
+          content:
+            application/json:
+              schema: Professor
+      tags:
+        - Professors
+    """
     query_parameters = request.args
 
     professor_name = query_parameters.get('name')
@@ -43,6 +69,19 @@ def professor():
 
 @app.route('/reviews', methods=['GET'])
 def reviews():
+    """Get all reviews
+        ---
+        get:
+          description: Get all reviews
+          responses:
+            200:
+              description: Return all reviews
+              content:
+                application/json:
+                  schema: Review
+          tags:
+            - Reviews
+    """
     query_parameters = request.args
 
     professor_name = query_parameters.get('name')
